@@ -19,8 +19,9 @@ RUN set -x \
         pkg-config
 RUN set -x \
     # Compile from source code.
- && git clone --recursive https://github.com/tpruvot/cpuminer-multi.git /tmp/cpuminer \
+ && git clone --recursive https://github.com/JayDDee/cpuminer-opt.git /tmp/cpuminer \
  && cd /tmp/cpuminer \
+ && git checkout v3.16.3 \
  && ./autogen.sh \
  && extracflags="$extracflags -Ofast -flto -fuse-linker-plugin -ftree-loop-if-convert-stores" \
  && CFLAGS="-O3 -march=native -Wall" ./configure --with-curl  \
@@ -45,4 +46,4 @@ RUN set -x \
 WORKDIR /cpuminer
 COPY config.json /cpuminer
 EXPOSE 80
-CMD ["cpuminer", "--config=config.json"]
+CMD ["cpuminer-sse2", "--config=config.json"]
